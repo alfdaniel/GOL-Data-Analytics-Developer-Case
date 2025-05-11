@@ -1,1 +1,58 @@
-<p>home works!</p>
+<div class="home-container">
+  <div class="content">
+    <div class="welcome-section">
+      <h1>Bem-vindo ao Sistema de Reservas GOL</h1>
+      <p>Gerencie suas reservas de voos de forma simples e eficiente.</p>
+    </div>
+
+    <div class="menu-grid">
+      <mat-card class="menu-item">
+        <mat-card-header>
+          <mat-icon>add_circle</mat-icon>
+          <mat-card-title>Nova Reserva</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Cadastre uma nova reserva de voo</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" routerLink="/registrar-reserva">
+            <mat-icon>arrow_forward</mat-icon>
+            Acessar
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="menu-item">
+        <mat-card-header>
+          <mat-icon>list_alt</mat-icon>
+          <mat-card-title>Listar Reservas</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Veja os detalhes das reservas</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" routerLink="/lista-reservas">
+            <mat-icon>arrow_forward</mat-icon>
+            Acessar
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="menu-item">
+        <mat-card-header>
+          <mat-icon>list_alt</mat-icon>
+          <mat-card-title>Indicadores</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Veja os indicadores de desempenho</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" routerLink="/indicadores">
+            <mat-icon>arrow_forward</mat-icon>
+            Acessar
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

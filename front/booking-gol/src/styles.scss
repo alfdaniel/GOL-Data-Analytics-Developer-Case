@@ -1,4 +1,133 @@
-/* You can add global styles to this file, and also import other style files */
+// /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@use '@angular/material' as mat;
+@use 'sass:map';
+@use 'sass:color';
+// @use '@angular/material/core' as mat-core;
+// @use '@angular/material/theming' as mat;
+
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// Define a custom primary color palette
+$primary-palette: (
+  50: #fff3e0,
+  100: #ffe0b2,
+  200: #ffcc80,
+  300: #ffb74d,
+  400: #ffa726,
+  500: #FF7020,
+  600: #fb8c00,
+  700: #f57c00,
+  800: #ef6c00,
+  900: #e65100,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+// $theme-primary: mat.define-palette($primary-palette);
+
+// $theme: mat.define-light-theme((
+//   color: (
+//     primary: $theme-primary,
+//     accent: $theme-primary,
+//     warn: mat.define-palette(mat.$red-palette),
+//   ),
+//   typography: mat.define-typography-config(),
+//   density: 0,
+// ));
+
+// @include mat.all-component-themes($theme);
+
+// Custom styles for buttons and icons
+.mat-mdc-raised-button {
+  &.mat-primary {
+    background-color: #FF7020;
+    color: white;
+
+    &:hover {
+      background-color: color.adjust(#FF7020, $lightness: -5%);
+    }
+
+    &:disabled {
+      background-color: rgba(#FF7020, 0.38);
+    }
+  }
+}
+
+.mat-mdc-button {
+  &.mat-primary {
+    color: #FF7020;
+
+    &:hover {
+      background-color: rgba(#FF7020, 0.04);
+    }
+
+    &:disabled {
+      color: rgba(#FF7020, 0.38);
+    }
+  }
+}
+
+.mat-icon {
+  color: #FF7020;
+}
+
+// Global styles
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// Snackbar styles
+.success-snackbar {
+  background: #4caf50;
+  color: white;
+}
+
+.error-snackbar {
+  background: #f44336;
+  color: white;
+}
+
+// Classes utilitárias
+.flex {
+  display: flex;
+}
+
+.gap-2 {
+  gap: 8px;
+}
+
+// Estilos para os campos de formulário
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+// Estilos para o card
+mat-card {
+  max-width: 800px;
+  margin: 24px auto;
+  padding: 24px;
+}
+
+// Estilos para o layout responsivo
+@media (max-width: 600px) {
+  mat-card {
+    margin: 16px;
+    padding: 16px;
+  }
+}

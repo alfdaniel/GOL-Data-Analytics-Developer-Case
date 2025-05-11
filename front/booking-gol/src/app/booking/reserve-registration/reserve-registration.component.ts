@@ -1,65 +1,103 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
-import { MatInputModule } from '@angular/material/input';
-
-interface Booking {
-  first_name: string;
-  last_name: string;
-  birthday: Date;
-  document: string;
-  departure_date: string;
-  departure_iata: string;
-  arrival_iata: string;
-  arrival_date: string;
-}
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router, RouterModule } from '@angular/router';
+import { BookingService } from '../../services/booking.service';
+import { catchError, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
+  selector: 'app-reserve-registration',
   standalone: true,
   imports: [
-    MatFormFieldModule,
+    CommonModule,
     ReactiveFormsModule,
-    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    RouterModule,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNativeDateAdapter()],
   templateUrl: './reserve-registration.component.html',
-  styleUrls: ['./reserve-registration.component.scss'] // corrected 'styleUrl' to 'styleUrls'
+  styleUrls: ['./reserve-registration.component.scss']
 })
-export class ReserveRegistrationComponent implements OnInit {
-  bookingForm: FormGroup;
+export class ReserveRegistrationComponent {
+  reserveForm: FormGroup;
+  loading = false;
 
-  myFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
-    return day !== 0 && day !== 6;
-  };
-
-  constructor(private fb: FormBuilder) {
-    this.bookingForm = this.fb.group({
-      first_name: ['', Validators.required],
-      last_name: ['', Validators.required],
-      birthday: [null, Validators.required], // changed to null for Date type
-      document: [''],
+  constructor(
+    private fb: FormBuilder,
+    private bookingService: BookingService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {
+    this.reserveForm = this.fb.group({
+      first_name: ['', [Validators.required, Validators.minLength(2)]],
+      last_name: ['', [Validators.required, Validators.minLength(2)]],
+      birthday: [null, Validators.required],
+      document: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]],
       departure_date: ['', Validators.required],
-      departure_iata: ['', Validators.required],
-      arrival_iata: ['', Validators.required],
-      arrival_date: ['', Validators.required],
+      departure_iata: ['', [Validators.required, Validators.pattern('^[A-Z]{3}$')]],
+      arrival_iata: ['', [Validators.required, Validators.pattern('^[A-Z]{3}$')]],
+      arrival_date: ['', Validators.required]
     });
   }
 
-  ngOnInit(): void {
+  validateDates() {
+    const departure = this.reserveForm.get('departure_date')?.value;
+    const arrival = this.reserveForm.get('arrival_date')?.value;
+
+    if (departure && arrival && new Date(arrival) <= new Date(departure)) {
+      this.reserveForm.get('arrival_date')?.setErrors({ invalidDate: true });
+    }
   }
 
-  onSubmit(): void {
-    console.log('Form submitted:', this.bookingForm.value);
+  onSubmit() {
+    if (this.reserveForm.valid) {
+      this.loading = true;
+      const data = { ...this.reserveForm.value };
+
+      data.birthday = data.birthday.toISOString().split('T')[0];
+      data.departure_date = data.departure_date.toISOString().split('T')[0];
+      data.arrival_date = data.arrival_date.toISOString().split('T')[0];
+
+      console.log('submetendo reserva', data);
+      this.bookingService.createBooking(data)
+        .pipe(
+          catchError(error => {
+            console.error('Erro ao criar reserva:', error);
+            this.snackBar.open('Erro ao criar reserva. Tente novamente.', 'Fechar', {
+              duration: 5000,
+              panelClass: ['error-snackbar']
+            });
+            return of(null);
+          }),
+          finalize(() => this.loading = false)
+        )
+        .subscribe(response => {
+          if (response) {
+            this.snackBar.open('Reserva criada com sucesso!', 'Fechar', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            this.router.navigate(['/lista-reservas']);
+          }
+        });
+    }
   }
-
-
 }
