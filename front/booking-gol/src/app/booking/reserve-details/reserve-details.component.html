@@ -1,0 +1,90 @@
+<mat-card class="reserve-details">
+  <mat-card-header>
+    <mat-card-title>Detalhes da Reserva</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content *ngIf="booking">
+    <div class="details-grid">
+      <div class="detail-item">
+        <strong>Nome:</strong> {{booking.first_name}} {{booking.last_name}}
+      </div>
+      <div class="detail-item">
+        <strong>CPF:</strong> {{booking.document}}
+      </div>
+      <div class="detail-item">
+        <strong>Data de Nascimento:</strong> {{booking.birthday | date:'dd/MM/yyyy'}}
+      </div>
+      <div class="detail-item">
+        <strong>Origem:</strong> {{booking.departure_iata}}
+      </div>
+      <div class="detail-item">
+        <strong>Destino:</strong> {{booking.arrival_iata}}
+      </div>
+      <div class="detail-item">
+        <strong>Data de Partida:</strong> {{booking.departure_date | date:'dd/MM/yyyy'}}
+      </div>
+      <div class="detail-item">
+        <strong>Data de Chegada:</strong> {{booking.arrival_date | date:'dd/MM/yyyy'}}
+      </div>
+    </div>
+
+    <div class="document-section">
+      <mat-card class="document-preview">
+        <mat-card-header>
+          <mat-card-title>Documento CPF</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="preview-container" *ngIf="selectedFile">
+            <div class="preview-image" *ngIf="isImageFile">
+              <img [src]="previewUrl" alt="Preview do documento">
+            </div>
+            <div class="preview-pdf" *ngIf="!isImageFile">
+              <mat-icon>picture_as_pdf</mat-icon>
+              <span>{{selectedFile.name}}</span>
+            </div>
+          </div>
+
+          <div class="no-file" *ngIf="!selectedFile">
+            <mat-icon>upload_file</mat-icon>
+            <span>Nenhum documento selecionado</span>
+          </div>
+
+          <div class="file-info" *ngIf="selectedFile">
+            <p><strong>Nome:</strong> {{selectedFile.name}}</p>
+            <p><strong>Tamanho:</strong> {{(selectedFile.size / 1024 / 1024).toFixed(2)}} MB</p>
+            <p><strong>Tipo:</strong> {{selectedFile.type}}</p>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <input type="file"
+                 #fileInput
+                 (change)="onFileSelected($event)"
+                 accept=".xlsx"
+                 style="display: none">
+
+          <button mat-raised-button
+                  color="primary"
+                  (click)="fileInput.click()">
+            <mat-icon>upload_file</mat-icon>
+            Selecionar Documento
+          </button>
+
+          <button mat-raised-button
+                  color="accent"
+                  [disabled]="!selectedFile"
+                  (click)="reviasarEnviaDocumento()">
+            <mat-icon>send</mat-icon>
+            Enviar Documento
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+
+<!-- template.component.html -->
+<button (click)="downloadBookings()">baixar arquivo</button>

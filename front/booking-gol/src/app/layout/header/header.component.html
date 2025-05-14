@@ -1,1 +1,52 @@
-<p>header works!</p>
+<!-- <mat-toolbar class="toolbar">
+  <button mat-icon-button routerLink="/" class="home-button">
+    <mat-icon>home</mat-icon>
+  </button>
+  <span>GOL Reservas</span>
+
+  <button mat-button routerLink="/registrar-reserva">
+    <mat-icon>add_circle</mat-icon>
+    Nova Reserva
+  </button>
+
+  <button mat-button routerLink="/lista-reservas">
+    <mat-icon>list_alt</mat-icon>
+    Listar Reservas
+  </button>
+
+  <button mat-button routerLink="/dashboard">
+    <mat-icon>dashboard</mat-icon>
+    Dashboard
+  </button>
+</mat-toolbar> -->
+<mat-toolbar class="toolbar">
+  <div style="width: 94%; display: flex; justify-content: space-between; align-items: center; margin: 0 auto; max-width: 80rem;">
+    <div class="content" *ngIf="router.url !== '/'">
+      <button mat-icon-button routerLink="/" class="home-button">
+        <mat-icon style="color: white;">home</mat-icon>
+      </button>
+      <!-- <span>GOL Reservas</span> -->
+    </div>
+
+    <span class="page-title">
+      <ng-container [ngSwitch]="true">
+        <ng-container *ngSwitchCase="router.url === '/'">GOL Reservas</ng-container>
+        <ng-container *ngSwitchCase="router.url === '/registrar-reserva'">Cadastro Reservas</ng-container>
+        <ng-container *ngSwitchCase="router.url === '/lista-reservas'">Lista Reservas</ng-container>
+        <ng-container *ngSwitchCase="router.url === '/dashboard'">Dashboard</ng-container>
+      </ng-container>
+    </span>
+
+    <!-- <span class="spacer"></span> -->
+
+    <div class="nav-buttons" *ngIf="router.url !== '/'">
+      <button mat-icon-button routerLink="/reservas" *ngIf="router.url !== '/reservas'" class="menu-button" style="background-color: rgba(255, 255, 255, 0.15);">
+        <mat-icon style="color: white;">add_circle</mat-icon>
+      </button>
+
+      <button mat-icon-button routerLink="/dashboard" *ngIf="router.url !== '/dashboard'" class="menu-button" style="background-color: rgba(255, 255, 255, 0.35);">
+        <mat-icon style="color: white;">dashboard</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-toolbar>

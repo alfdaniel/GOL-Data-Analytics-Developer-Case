@@ -24,6 +24,6 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
     headers: request.headers.set('Authorization', `Bearer ${encryptedToken}`)
   });
 
+  console.log('token', authRequest);
   return next(authRequest);
 };
- 

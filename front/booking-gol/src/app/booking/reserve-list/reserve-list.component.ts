@@ -1,13 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
 import { BookingService, Booking, BookingResponse } from '../../services/booking.service';
 import { catchError, finalize, of } from 'rxjs';
+import { NotificationService } from '../../shared/notification';
+import moment from 'moment';
 
 @Component({
   selector: 'app-reserve-list',
@@ -20,6 +23,8 @@ import { catchError, finalize, of } from 'rxjs';
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatCardModule,
+    RouterModule,
+    DatePipe
   ],
   templateUrl: './reserve-list.component.html',
   styleUrls: ['./reserve-list.component.scss']
@@ -45,10 +50,17 @@ export class ReserveListComponent implements OnInit {
   pageSizeOptions = [5, 10, 25, 50];
   currentPage = 0;
 
-  constructor(private bookingService: BookingService) {}
+  constructor(
+    private bookingService: BookingService,
+    private notification: NotificationService
+  ) {}
 
   ngOnInit() {
     this.loadBookings();
+  }
+
+  formatDate(date: string): Date {
+    return moment(date, 'DD-MM-YYYY').toDate();
   }
 
   loadBookings() {
@@ -60,6 +72,7 @@ export class ReserveListComponent implements OnInit {
         catchError(error => {
           console.error('Erro ao carregar reservas:', error);
           this.error = true;
+          this.notification.showAlert('Erro ao carregar reservas.', 'error');
           return of(null);
         }),
         finalize(() => this.loading = false)
