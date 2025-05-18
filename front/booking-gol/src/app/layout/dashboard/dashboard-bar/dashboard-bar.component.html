@@ -1,0 +1,20 @@
+<mat-card style="display: flex; justify-content: center; align-items: center;" *ngIf="loadingChart">
+  <mat-spinner></mat-spinner>
+</mat-card>
+
+<section class="charts">
+  @for (chart of charts; track chart.id) {
+  <div [class.expanded]="expandedChart() === chart.id"
+       [class.side]="expandedChart() && expandedChart() !== chart.id">
+    <mat-card *ngIf="!loadingChart">
+      <div class="chart-header">
+        <h3>{{chart.title}}</h3>
+        <button mat-icon-button (click)="toggleChart(chart.id)">
+          <mat-icon>{{expandedChart() === chart.id ? 'close_fullscreen' : 'open_in_full'}}</mat-icon>
+        </button>
+      </div>
+      <canvas baseChart [data]="chart.data" [options]="barChartOptions" chartType="bar"></canvas>
+    </mat-card>
+  </div>
+  }
+</section>

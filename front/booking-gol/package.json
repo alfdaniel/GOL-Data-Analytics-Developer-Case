@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0 --disable-host-check",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -24,6 +24,7 @@
     "@mat-datetimepicker/moment": "^15.0.2",
     "@material/web": "^2.3.0",
     "chart.js": "^4.4.1",
+    "crypto-js": "^4.2.0",
     "ng2-charts": "^5.0.4",
     "ngx-mask": "^19.0.6",
     "rxjs": "~7.8.0",

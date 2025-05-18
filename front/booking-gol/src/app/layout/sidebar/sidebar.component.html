@@ -1,0 +1,24 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" [mode]="isLargeScreen ? 'side' : 'over'" [opened]="isLargeScreen">
+    <mat-toolbar style="height: 110px; border-bottom: 1px solid #626262;" color="primary">GOL Analytics</mat-toolbar>
+    <mat-nav-list>
+      <ng-container *ngFor="let item of menuItems()">
+        <mat-list-item>
+          <a mat-list-item [routerLink]="item.route" (click)="isLargeScreen ? null : drawer.close()">
+            <mat-icon style="padding-right: 4px; font-size: 20px;">{{ item.icon }}</mat-icon>
+            {{ item.label }}
+          </a>
+        </mat-list-item>
+      </ng-container>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="toolbar">
+      <button mat-icon-button (click)="drawer.toggle()" class="hide-web">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>{{ getTitleUrl() }}</span>
+    </mat-toolbar>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

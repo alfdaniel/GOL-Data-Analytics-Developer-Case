@@ -1,0 +1,73 @@
+body {
+  background: var(--background);
+  color: #2b2b2b;
+}
+
+.mat-toolbar {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.sidenav {
+  background-color: #6262622e;
+}
+
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 240px;
+}
+
+.menu-item {
+  color: #fff;
+}
+
+.hide-web {
+  display: none;
+}
+
+::ng-deep .mat-mdc-list-item-unscoped-content {
+  display: flex;
+}
+
+mat-list-item {
+  &:hover {
+    background-color: transparent;
+    // color: #fff;
+  }
+}
+
+.toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #626262;
+  span {
+    color: #fff;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidenav {
+    width: 180px;
+    background-color: #626262;
+  }
+  .hide-web {
+    display: inline-flex;
+  }
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #626262;
+}
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}

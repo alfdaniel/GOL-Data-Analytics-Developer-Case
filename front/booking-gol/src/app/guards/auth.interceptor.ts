@@ -1,5 +1,5 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '@environments/environment';
 import * as CryptoJS from 'crypto-js';
 
 const generateToken = () => {
@@ -24,6 +24,5 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
     headers: request.headers.set('Authorization', `Bearer ${encryptedToken}`)
   });
 
-  console.log('token', authRequest);
   return next(authRequest);
 };
